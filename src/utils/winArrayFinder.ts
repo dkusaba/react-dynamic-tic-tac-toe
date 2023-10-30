@@ -157,6 +157,83 @@ export const checkLeftDiagonal = (gridArr, numWin) => {
               }
             }
           }
+          // console.log('[i]:', i);
+          // console.log('[data]:', data);
+          console.log('A player won');
+          console.log(diagArr[i][x + 1].data === 'O' ? 'O' : 'X');
+          return data;
+        }
+      } else {
+        count = 1;
+      }
+    }
+  }
+};
+
+export const checkRightDiagonal = (gridArr, numWin) => {
+  // build arrays of diagonal lines
+  const diagArr = [];
+  for (let i = 0; i < (gridArr.length - numWin) * 2 + 1; i++) {
+    const diagonalCell: diagonalCell[] = [];
+    diagArr.push(diagonalCell);
+  }
+  for (let i = 0; i < Math.floor(diagArr.length / 2); i++) {
+    for (let x = 0; x < numWin + i; x++) {
+      diagArr[i].push({
+        x: gridArr.length - 1 - x,
+        y: numWin - 1 + i - x,
+        data: gridArr[numWin - 1 + i - x][gridArr.length - 1 - x]
+      });
+    }
+  }
+  for (let i = 0; i < gridArr.length; i++) {
+    diagArr[Math.floor(diagArr.length / 2)].push({
+      x: gridArr.length - 1 - i,
+      y: gridArr.length - 1 - i,
+      data: gridArr[gridArr.length - 1 - i][gridArr.length - 1 - i]
+    });
+  }
+  for (let i = 0; i < Math.floor(diagArr.length / 2); i++) {
+    for (let x = 0; x < gridArr.length - 1 - i; x++) {
+      diagArr[i + Math.ceil(diagArr.length / 2)].push({
+        x: gridArr.length - i - x - 2,
+        y: gridArr.length - 1 - x,
+        data: gridArr[gridArr.length - 1 - x][gridArr.length - i - x - 2]
+      });
+    }
+  }
+
+  for (let i = 0; i < diagArr.length; i++) {
+    let count = 1;
+    for (let x = 0; x < diagArr[i].length - 1; x++) {
+      if (
+        typeof diagArr[i][x].data === 'string' &&
+        diagArr[i][x].data === diagArr[i][x + 1].data
+      ) {
+        count++;
+        if (count >= numWin) {
+          console.log('[count]:', count);
+          const data = [];
+          if (diagArr[i][x - 1]) {
+            for (let z = x; z >= 0; z--) {
+              if (diagArr[i][x - z].data === diagArr[i][x].data) {
+                data.push({
+                  x: diagArr[i][x - z].x,
+                  y: diagArr[i][x - z].y
+                });
+              }
+            }
+          }
+          if (diagArr[i][x + 2]) {
+            for (let z = x + 1; z < diagArr[i].length; z++) {
+              if (diagArr[i][x + 1].data === diagArr[i][z].data) {
+                data.push({
+                  x: diagArr[i][z].x,
+                  y: diagArr[i][z].y
+                });
+              }
+            }
+          }
           console.log('[i]:', i);
           console.log('[data]:', data);
           console.log('A player won');

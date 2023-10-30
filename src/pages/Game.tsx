@@ -6,7 +6,8 @@ import { faCircle } from '@fortawesome/free-regular-svg-icons';
 import {
   checkLeftDiagonal,
   checkHorizontal,
-  checkVertical
+  checkVertical,
+  checkRightDiagonal
 } from '../utils/winArrayFinder';
 
 function Game() {
@@ -26,9 +27,10 @@ function Game() {
   function clickHandler(row: number, col: number) {
     boardData[row][col] = player;
     setBoardData([...boardData]);
-    checkHorizontal(boardData, numWin);
-    checkVertical(boardData, numWin);
-    checkLeftDiagonal(boardData, numWin);
+    // checkHorizontal(boardData, numWin);
+    // checkVertical(boardData, numWin);
+    // checkLeftDiagonal(boardData, numWin);
+    checkRightDiagonal(boardData, numWin);
     setPlayer(player === 'O' ? 'X' : 'O');
   }
 
