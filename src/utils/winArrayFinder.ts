@@ -8,37 +8,38 @@ export const checkHorizontal = (gridArr, numWin: number) => {
   for (let i = 0; i < gridArr.length; i++) {
     let count = 1;
     for (let x = 0; x < gridArr[i].length - 1; x++) {
-      for (let y = x + 1; y < gridArr[i].length; y++) {
-        if (
-          typeof gridArr[i][x] === 'string' &&
-          gridArr[i][x] === gridArr[i][y]
-        ) {
-          count++;
-          if (count >= numWin) {
-            const xData = [];
-            if (gridArr.length - 1 > y) {
-              for (let z = 1; z <= gridArr.length - y; z++) {
-                if (gridArr[i][y] === gridArr[i][y + z]) {
-                  xData.push({ x: y + z, y: i });
-                }
+      if (
+        typeof gridArr[i][x] === 'string' &&
+        gridArr[i][x] === gridArr[i][x + 1]
+      ) {
+        count++;
+        if (count >= numWin) {
+          const xData = [];
+          if (gridArr.length - 1 > x + 1) {
+            for (let z = 1; z <= gridArr.length - x + 1; z++) {
+              if (gridArr[i][x + 1] === gridArr[i][x + 1 + z]) {
+                xData.push({ x: x + 1 + z, y: i });
               }
             }
-            if (y !== 0) {
-              for (let z = 0; z <= y; z++) {
-                if (gridArr[i][y] === gridArr[i][z]) {
-                  xData.push({ x: z, y: i });
-                }
-              }
-            }
-            console.log('[i]:', i);
-            console.log('[xData]:', xData);
-            console.log('A player won');
-            console.log(gridArr[i][y] === 'O' ? 'O' : 'X');
-            break;
           }
-        } else {
-          count = 1;
+          if (x + 1 !== 0) {
+            for (let z = 0; z <= x + 1; z++) {
+              if (gridArr[i][x + 1] === gridArr[i][z]) {
+                xData.push({ x: z, y: i });
+              }
+            }
+          }
+          console.log('[i]:', i);
+          console.log('[xData]:', xData);
+          console.log('A player won');
+          console.log(gridArr[i][x + 1] === 'O' ? 'O' : 'X');
+          return {
+            winner: gridArr[i][x + 1] === 'O' ? 'O' : 'X',
+            data: xData
+          };
         }
+      } else {
+        count = 1;
       }
     }
   }
@@ -60,34 +61,35 @@ export const checkVertical = (gridArr, numWin: number) => {
   for (let i = 0; i < vArr.length; i++) {
     let count = 1;
     for (let x = 0; x < vArr[i].length - 1; x++) {
-      for (let y = x + 1; y < vArr[i].length; y++) {
-        if (typeof vArr[i][x] === 'string' && vArr[i][x] === vArr[i][y]) {
-          count++;
-          if (count >= numWin) {
-            const yData = [];
-            if (vArr.length - 1 > y) {
-              for (let z = 1; z <= vArr.length - y; z++) {
-                if (vArr[i][y] === vArr[i][y + z]) {
-                  yData.push({ x: i, y: y + z });
-                }
+      if (typeof vArr[i][x] === 'string' && vArr[i][x] === vArr[i][x + 1]) {
+        count++;
+        if (count >= numWin) {
+          const yData = [];
+          if (vArr.length - 1 > x + 1) {
+            for (let z = 1; z <= vArr.length - x + 1; z++) {
+              if (vArr[i][x + 1] === vArr[i][x + 1 + z]) {
+                yData.push({ x: i, y: x + 1 + z });
               }
             }
-            if (y !== 0) {
-              for (let z = 0; z <= y; z++) {
-                if (vArr[i][y] === vArr[i][z]) {
-                  yData.push({ x: i, y: z });
-                }
-              }
-            }
-            console.log('[i]:', i);
-            console.log('[yData]:', yData);
-            console.log('A player won');
-            console.log(vArr[i][y] === 'O' ? 'O' : 'X');
-            return yData;
           }
-        } else {
-          count = 1;
+          if (x + 1 !== 0) {
+            for (let z = 0; z <= x + 1; z++) {
+              if (vArr[i][x + 1] === vArr[i][z]) {
+                yData.push({ x: i, y: z });
+              }
+            }
+          }
+          console.log('[i]:', i);
+          console.log('[yData]:', yData);
+          console.log('A player won');
+          console.log(vArr[i][x + 1] === 'O' ? 'O' : 'X');
+          return {
+            winner: vArr[i][x + 1] === 'O' ? 'O' : 'X',
+            data: yData
+          };
         }
+      } else {
+        count = 1;
       }
     }
   }
@@ -161,7 +163,10 @@ export const checkLeftDiagonal = (gridArr, numWin) => {
           // console.log('[data]:', data);
           console.log('A player won');
           console.log(diagArr[i][x + 1].data === 'O' ? 'O' : 'X');
-          return data;
+          return {
+            winner: diagArr[i][x + 1].data === 'O' ? 'O' : 'X',
+            data
+          };
         }
       } else {
         count = 1;
@@ -238,7 +243,10 @@ export const checkRightDiagonal = (gridArr, numWin) => {
           console.log('[data]:', data);
           console.log('A player won');
           console.log(diagArr[i][x + 1].data === 'O' ? 'O' : 'X');
-          return data;
+          return {
+            winner: diagArr[i][x + 1].data === 'O' ? 'O' : 'X',
+            data
+          };
         }
       } else {
         count = 1;
@@ -247,4 +255,23 @@ export const checkRightDiagonal = (gridArr, numWin) => {
   }
 
   console.log(diagArr);
+};
+
+export const checkWin = (gridArr, numWin) => {
+  const horizontal = checkHorizontal(gridArr, numWin);
+  if (horizontal && horizontal.winner) {
+    return horizontal;
+  }
+  const vertical = checkVertical(gridArr, numWin);
+  if (vertical && vertical.winner) {
+    return vertical;
+  }
+  const leftDiagonal = checkLeftDiagonal(gridArr, numWin);
+  if (leftDiagonal && leftDiagonal.winner) {
+    return leftDiagonal;
+  }
+  const rightDiagonal = checkRightDiagonal(gridArr, numWin);
+  if (rightDiagonal && rightDiagonal.winner) {
+    return rightDiagonal;
+  }
 };

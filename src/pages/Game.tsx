@@ -1,20 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { faCircle } from '@fortawesome/free-regular-svg-icons';
-import {
-  checkLeftDiagonal,
-  checkHorizontal,
-  checkVertical,
-  checkRightDiagonal
-} from '../utils/winArrayFinder';
+import { checkWin } from '../utils/winArrayFinder';
 
 function Game() {
   const { state } = useLocation();
   const { gridSize, numWin } = state;
   const [boardData, setBoardData] = useState(createBoard(gridSize));
   const [player, setPlayer] = useState<string>('O');
+  const [gameOver, setGameOver] = useState<boolean>(false);
 
   function createBoard(num: number) {
     const gridArr = [];
@@ -27,18 +23,19 @@ function Game() {
   function clickHandler(row: number, col: number) {
     boardData[row][col] = player;
     setBoardData([...boardData]);
-    // checkHorizontal(boardData, numWin);
-    // checkVertical(boardData, numWin);
-    // checkLeftDiagonal(boardData, numWin);
-    checkRightDiagonal(boardData, numWin);
+    const winner = checkWin(boardData, numWin);
+    if (winner && winner.winner) {
+      setGameOver(true);
+      for (let i = 0; i < winner.data.length; i++) {
+        document
+          .querySelector(
+            `[data-x="${winner.data[i].x}"][data-y="${winner.data[i].y}"]`
+          )
+          .classList.add('bg-red-800');
+      }
+    }
     setPlayer(player === 'O' ? 'X' : 'O');
   }
-
-  useEffect(() => {
-    // console.log('[gridSize]:', gridSize);
-    // console.log('[numWin]:', numWin);
-    // console.log(boardData);
-  });
 
   return (
     <div
@@ -54,9 +51,11 @@ function Game() {
             <div
               style={{ width: 50, height: 50 }}
               className='flex justify-center items-center box-border border border-t-0 border-r-1 border-b-1 border-l-0 border-zinc-500'
+              data-x={c}
+              data-y={r}
               key={c}
               onClick={() => {
-                if (!boardData[r][c]) {
+                if (!boardData[r][c] && !gameOver) {
                   clickHandler(r, c);
                 }
               }}
