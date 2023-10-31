@@ -49,6 +49,13 @@ function Game() {
 
   return (
     <>
+      <p className='text-xl text-color-zinc-500 uppercase '>
+        {gameOver ? (
+          <span className='text-red-500'>{player} wins</span>
+        ) : (
+          player + "'s turn"
+        )}
+      </p>
       <div
         className='box-content mx-auto justify-center items-center flex flex-wrap border border-t-1 border-r-0 border-b-0 border-l-1 border-zinc-500'
         style={{
@@ -82,23 +89,16 @@ function Game() {
           });
         })}
       </div>
-      <p className='text-xl text-color-zinc-500 uppercase '>
-        {gameOver ? (
-          <span className='text-red-500'>{player} wins</span>
-        ) : (
-          player + "'s turn"
-        )}
-      </p>
-      <div className='w-96 flex justify-between mt-10'>
+      <div className='w-96 flex justify-between mt-10 mx-auto '>
         <Link
-          className='bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-700 hover:text-white'
+          className='bg-blue-900 text-white font-bold py-2 px-4 rounded hover:bg-blue-700 hover:text-white'
           to='/'
         >
           Change Board Size
         </Link>
         <button
           onClick={resetHandler}
-          className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
+          className='bg-blue-900 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
         >
           {gameOver ? 'Play Again' : 'Start Over / Reset'}
         </button>
