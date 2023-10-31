@@ -25,7 +25,6 @@ function Game() {
     setBoardData([...boardData]);
     const winner = checkWin(boardData, numWin);
     if (winner && winner.length > 0) {
-      console.log('[winner]:', winner);
       setGameOver(true);
       for (let i = 0; i < winner.length; i++) {
         const div = window.document.querySelector(
