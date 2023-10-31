@@ -3,21 +3,21 @@ import { Link } from 'react-router-dom';
 import NumSelect from '../components/NumSelect';
 
 function Home() {
-  const [gridSize, setGridSize] = useState<number>(3);
+  const [boardSize, setBoardSize] = useState<number>(3);
   const [numWin, setNumWin] = useState<number>(3);
 
   return (
     <div>
-      <p>Enter grid size</p>
+      <p>Select board size (rows x columns)</p>
       <NumSelect
         num={20}
         onChange={(e: React.FormEvent<HTMLSelectElement>) => {
-          setGridSize(+(e.target as HTMLSelectElement).value);
+          setBoardSize(+(e.target as HTMLSelectElement).value);
         }}
       />
-      <p>Enter the number of consecutive O's X's required to win</p>
+      <p>Select the number of consecutive O's X's required to win</p>
       <NumSelect
-        num={gridSize}
+        num={boardSize}
         onChange={(e: React.FormEvent<HTMLSelectElement>) => {
           setNumWin(+(e.target as HTMLSelectElement).value);
         }}
@@ -25,11 +25,11 @@ function Home() {
       <br />
       <button
         onClick={() => {
-          console.log('[gridSize]:', gridSize);
+          console.log('[boardSize]:', boardSize);
           console.log('[numWin]:', numWin);
         }}
       >
-        <Link to='./game' state={{ gridSize, numWin }}>
+        <Link to='./game' state={{ boardSize, numWin }}>
           Play Game
         </Link>
       </button>

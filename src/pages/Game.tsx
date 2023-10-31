@@ -7,17 +7,17 @@ import { checkWin } from '../utils/winArrayFinder';
 
 function Game() {
   const { state } = useLocation();
-  const { gridSize, numWin } = state;
-  const [boardData, setBoardData] = useState(createBoard(gridSize));
+  const { boardSize, numWin } = state;
+  const [boardData, setBoardData] = useState(createBoard(boardSize));
   const [player, setPlayer] = useState<string>('O');
   const [gameOver, setGameOver] = useState<boolean>(false);
 
   function createBoard(num: number) {
-    const gridArr = [];
+    const board = [];
     for (let i = 0; i < num; i++) {
-      gridArr.push([...Array(num)]);
+      board.push([...Array(num)]);
     }
-    return gridArr;
+    return board;
   }
 
   function clickHandler(row: number, col: number) {
@@ -45,8 +45,8 @@ function Game() {
       <div
         className='box-content flex flex-wrap border border-t-1 border-r-0 border-b-0 border-l-1 border-zinc-500'
         style={{
-          width: gridSize * 50,
-          height: gridSize * 50
+          width: boardSize * 50,
+          height: boardSize * 50
         }}
       >
         {boardData.map((row, r) => {

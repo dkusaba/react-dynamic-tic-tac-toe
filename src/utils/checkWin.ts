@@ -4,26 +4,30 @@ interface diagonalCell {
   data: string | undefined;
 }
 
-const checkHorizontal = (gridArr, numWin: number) => {
-  for (let i = 0; i < gridArr.length; i++) {
+type Cell = 'O' | 'X' | undefined;
+type Row = Cell[];
+type Board = Row[];
+
+const checkHorizontal = (boardData: Board, numWin: number) => {
+  for (let i = 0; i < boardData.length; i++) {
     let count = 1;
-    for (let x = 0; x < gridArr[i].length - 1; x++) {
+    for (let x = 0; x < boardData[i].length - 1; x++) {
       if (
-        typeof gridArr[i][x] === 'string' &&
-        gridArr[i][x] === gridArr[i][x + 1]
+        typeof boardData[i][x] === 'string' &&
+        boardData[i][x] === boardData[i][x + 1]
       ) {
         count++;
         if (count >= numWin) {
           const data = [];
           for (let z = x; z >= 0; z--) {
-            if (gridArr[i][x] === gridArr[i][z]) {
+            if (boardData[i][x] === boardData[i][z]) {
               data.push({ x: z, y: i });
             } else {
               break;
             }
           }
-          for (let z = x + 1; z <= gridArr.length; z++) {
-            if (gridArr[i][x + 1] === gridArr[i][z]) {
+          for (let z = x + 1; z <= boardData.length; z++) {
+            if (boardData[i][x + 1] === boardData[i][z]) {
               data.push({ x: z, y: i });
             } else {
               break;
@@ -38,16 +42,16 @@ const checkHorizontal = (gridArr, numWin: number) => {
   }
 };
 
-const checkVertical = (gridArr, numWin: number) => {
+const checkVertical = (boardData: Board, numWin: number) => {
   // build an array of vertical lines
   const vArr = [];
-  for (let i = 0; i < gridArr.length; i++) {
-    vArr.push([...Array(gridArr.length)]);
+  for (let i = 0; i < boardData.length; i++) {
+    vArr.push([...Array(boardData.length)]);
   }
 
-  for (let i = 0; i < gridArr.length; i++) {
-    for (let x = 0; x < gridArr[i].length; x++) {
-      vArr[x][i] = gridArr[i][x];
+  for (let i = 0; i < boardData.length; i++) {
+    for (let x = 0; x < boardData[i].length; x++) {
+      vArr[x][i] = boardData[i][x];
     }
   }
 
@@ -82,10 +86,10 @@ const checkVertical = (gridArr, numWin: number) => {
   }
 };
 
-const checkLeftDiagonal = (gridArr, numWin) => {
+const checkLeftDiagonal = (boardData: Board, numWin: number) => {
   // build an array of diagonal lines
   const diagArr = [];
-  for (let i = 0; i < (gridArr.length - numWin) * 2 + 1; i++) {
+  for (let i = 0; i < (boardData.length - numWin) * 2 + 1; i++) {
     const diagonalCell: diagonalCell[] = [];
     diagArr.push(diagonalCell);
   }
@@ -94,23 +98,23 @@ const checkLeftDiagonal = (gridArr, numWin) => {
       diagArr[i].push({
         x: x,
         y: numWin - 1 + i - x,
-        data: gridArr[numWin - 1 + i - x][x]
+        data: boardData[numWin - 1 + i - x][x]
       });
     }
   }
-  for (let i = 0; i < gridArr.length; i++) {
+  for (let i = 0; i < boardData.length; i++) {
     diagArr[Math.floor(diagArr.length / 2)].push({
       x: i,
-      y: gridArr.length - 1 - i,
-      data: gridArr[gridArr.length - 1 - i][i]
+      y: boardData.length - 1 - i,
+      data: boardData[boardData.length - 1 - i][i]
     });
   }
   for (let i = 0; i < Math.floor(diagArr.length / 2); i++) {
-    for (let x = 0; x < gridArr.length - 1 - i; x++) {
+    for (let x = 0; x < boardData.length - 1 - i; x++) {
       diagArr[i + Math.ceil(diagArr.length / 2)].push({
         x: i + 1 + x,
-        y: gridArr.length - 1 - x,
-        data: gridArr[gridArr.length - 1 - x][i + 1 + x]
+        y: boardData.length - 1 - x,
+        data: boardData[boardData.length - 1 - x][i + 1 + x]
       });
     }
   }
@@ -155,35 +159,35 @@ const checkLeftDiagonal = (gridArr, numWin) => {
   }
 };
 
-const checkRightDiagonal = (gridArr, numWin) => {
+const checkRightDiagonal = (boardData: Board, numWin: number) => {
   // build an array of diagonal lines
   const diagArr = [];
-  for (let i = 0; i < (gridArr.length - numWin) * 2 + 1; i++) {
+  for (let i = 0; i < (boardData.length - numWin) * 2 + 1; i++) {
     const diagonalCell: diagonalCell[] = [];
     diagArr.push(diagonalCell);
   }
   for (let i = 0; i < Math.floor(diagArr.length / 2); i++) {
     for (let x = 0; x < numWin + i; x++) {
       diagArr[i].push({
-        x: gridArr.length - 1 - x,
+        x: boardData.length - 1 - x,
         y: numWin - 1 + i - x,
-        data: gridArr[numWin - 1 + i - x][gridArr.length - 1 - x]
+        data: boardData[numWin - 1 + i - x][boardData.length - 1 - x]
       });
     }
   }
-  for (let i = 0; i < gridArr.length; i++) {
+  for (let i = 0; i < boardData.length; i++) {
     diagArr[Math.floor(diagArr.length / 2)].push({
-      x: gridArr.length - 1 - i,
-      y: gridArr.length - 1 - i,
-      data: gridArr[gridArr.length - 1 - i][gridArr.length - 1 - i]
+      x: boardData.length - 1 - i,
+      y: boardData.length - 1 - i,
+      data: boardData[boardData.length - 1 - i][boardData.length - 1 - i]
     });
   }
   for (let i = 0; i < Math.floor(diagArr.length / 2); i++) {
-    for (let x = 0; x < gridArr.length - 1 - i; x++) {
+    for (let x = 0; x < boardData.length - 1 - i; x++) {
       diagArr[i + Math.ceil(diagArr.length / 2)].push({
-        x: gridArr.length - i - x - 2,
-        y: gridArr.length - 1 - x,
-        data: gridArr[gridArr.length - 1 - x][gridArr.length - i - x - 2]
+        x: boardData.length - i - x - 2,
+        y: boardData.length - 1 - x,
+        data: boardData[boardData.length - 1 - x][boardData.length - i - x - 2]
       });
     }
   }
@@ -227,20 +231,20 @@ const checkRightDiagonal = (gridArr, numWin) => {
   }
 };
 
-export const checkWin = (gridArr, numWin) => {
-  const horizontal = checkHorizontal(gridArr, numWin);
+export const checkWin = (boardData: Board, numWin: number) => {
+  const horizontal = checkHorizontal(boardData, numWin);
   if (horizontal && horizontal.length > 0) {
     return horizontal;
   }
-  const vertical = checkVertical(gridArr, numWin);
+  const vertical = checkVertical(boardData, numWin);
   if (vertical && vertical.length > 0) {
     return vertical;
   }
-  const leftDiagonal = checkLeftDiagonal(gridArr, numWin);
+  const leftDiagonal = checkLeftDiagonal(boardData, numWin);
   if (leftDiagonal && leftDiagonal.length > 0) {
     return leftDiagonal;
   }
-  const rightDiagonal = checkRightDiagonal(gridArr, numWin);
+  const rightDiagonal = checkRightDiagonal(boardData, numWin);
   if (rightDiagonal && rightDiagonal.length > 0) {
     return rightDiagonal;
   }
