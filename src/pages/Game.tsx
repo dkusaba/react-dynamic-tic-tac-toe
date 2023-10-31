@@ -1,9 +1,9 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { faCircle } from '@fortawesome/free-regular-svg-icons';
-import { checkWin } from '../utils/winArrayFinder';
+import { checkWin } from '../utils/checkWin';
 
 function Game() {
   const { state } = useLocation();
@@ -37,13 +37,20 @@ function Game() {
     setPlayer(player === 'O' ? 'X' : 'O');
   }
 
+  function resetHandler() {
+    setBoardData(createBoard(boardSize));
+    setPlayer('O');
+    setGameOver(false);
+    const cells = document.querySelectorAll('.bg-red-800');
+    cells.forEach((cell) => {
+      cell.classList.remove('bg-red-800');
+    });
+  }
+
   return (
     <>
-      <p className='text-color-zinc-500'>
-        {gameOver ? player + 'wins' : player + "'s turn"}
-      </p>
       <div
-        className='box-content flex flex-wrap border border-t-1 border-r-0 border-b-0 border-l-1 border-zinc-500'
+        className='box-content mx-auto justify-center items-center flex flex-wrap border border-t-1 border-r-0 border-b-0 border-l-1 border-zinc-500'
         style={{
           width: boardSize * 50,
           height: boardSize * 50
@@ -54,7 +61,7 @@ function Game() {
             return (
               <div
                 style={{ width: 50, height: 50 }}
-                className='flex justify-center items-center box-border border border-t-0 border-r-1 border-b-1 border-l-0 border-zinc-500'
+                className='cell flex justify-center items-center box-border border border-t-0 border-r-1 border-b-1 border-l-0 border-zinc-500'
                 data-x={c}
                 data-y={r}
                 key={c}
@@ -74,6 +81,27 @@ function Game() {
             );
           });
         })}
+      </div>
+      <p className='text-xl text-color-zinc-500 uppercase '>
+        {gameOver ? (
+          <span className='text-red-500'>{player} wins</span>
+        ) : (
+          player + "'s turn"
+        )}
+      </p>
+      <div className='w-96 flex justify-between mt-10'>
+        <Link
+          className='bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-700 hover:text-white'
+          to='/'
+        >
+          Change Board Size
+        </Link>
+        <button
+          onClick={resetHandler}
+          className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
+        >
+          {gameOver ? 'Play Again' : 'Start Over / Reset'}
+        </button>
       </div>
     </>
   );
