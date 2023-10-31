@@ -1,5 +1,6 @@
 {
   "name": "dynamic-tictactoe-react",
+  "homepage": "https://dkusaba.github.io/react-dynamic-tic-tac-toe/",
   "private": true,
   "version": "0.0.0",
   "type": "module",
