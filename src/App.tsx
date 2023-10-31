@@ -8,7 +8,6 @@ function App() {
     <Routes>
       <Route path='/react-dynamic-tic-tac-toe/' element={<Home />} />
       <Route path='/react-dynamic-tic-tac-toe/game' element={<Game />} />
-      <Route />
     </Routes>
   );
 }
