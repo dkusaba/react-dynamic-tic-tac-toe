@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
@@ -28,9 +28,10 @@ function Game() {
       console.log('[winner]:', winner);
       setGameOver(true);
       for (let i = 0; i < winner.length; i++) {
-        document
-          .querySelector(`[data-x="${winner[i].x}"][data-y="${winner[i].y}"]`)
-          .classList.add('bg-red-800');
+        const div = window.document.querySelector(
+          `[data-x="${winner[i].x}"][data-y="${winner[i].y}"]`
+        )!;
+        div.classList.add('bg-red-800');
       }
       return;
     }
