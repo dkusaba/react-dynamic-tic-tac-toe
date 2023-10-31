@@ -6,8 +6,8 @@ import './App.css';
 function App() {
   return (
     <Routes>
-      <Route path='/' element={<Home />} />
-      <Route path='/game' element={<Game />} />
+      <Route path='/react-dynamic-tic-tac-toe/' element={<Home />} />
+      <Route path='/react-dynamic-tic-tac-toe/game' element={<Game />} />
       <Route />
     </Routes>
   );

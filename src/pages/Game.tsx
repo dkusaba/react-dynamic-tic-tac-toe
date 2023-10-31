@@ -93,7 +93,7 @@ function Game() {
       <div className='w-96 flex justify-between mt-10 mx-auto '>
         <Link
           className='bg-blue-900 text-white font-bold py-2 px-4 rounded hover:bg-blue-700 hover:text-white'
-          to='/'
+          to='/react-dynamic-tic-tac-toe/'
         >
           Change Board Size
         </Link>
